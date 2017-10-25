@@ -4,5 +4,14 @@
   "main": "index.js",
   "author": "HaiTo <thewordr2.ver.xes@gmail.com>",
   "license": "MIT",
-  "private": true
+  "private": true,
+  "dependencies": {
+    "babel": "^6.23.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-latest": "^6.24.1",
+    "eslint": "^4.9.0",
+    "serverless": "^1.23.0",
+    "serverless-webpack": "^3.1.2",
+    "webpack": "^3.8.1"
+  }
 }
