@@ -6,14 +6,14 @@ module.exports = {
   target: 'node',
 
   module: {
-    loaders: [
-      {
-        test: /\.js$/,
-        loader: 'babel-loader',
-      }
-    ]
+    loaders: [{
+      test: /\.js$/,
+      loaders: ['babel-loader'],
+      include: __dirname,
+      exclude: /node_modules/,
+    }]
   },
   externals: [
     nodeExternals(),
-  ]
+  ],
 };
