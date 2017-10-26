@@ -26,13 +26,18 @@ plugins:
   - serverless-offline
 
 functions:
-  hello:
-    handler: handler.hello
+  first:
+    handler: src/handler.hello
+    events:
+      - http:
+          method: GET
+          path: first
 
 custom:
   webpackIncludeModules: true
   serverless-offline:
     port: 4567
+  webpack: ./webpack.config.js
 
 # you can overwrite defaults here
 #  stage: dev
