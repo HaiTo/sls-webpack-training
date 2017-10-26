@@ -1,16 +1,15 @@
-'use strict';
+if (!global._babelPolyfill) {
+   require('babel-polyfill');
+}
 
-module.exports.hello = (event, context, callback) => {
-  const response = {
-    statusCode: 200,
-    body: JSON.stringify({
-      message: 'Go Serverless v1.0! Your function executed successfully!',
-      input: event,
-    }),
-  };
-
-  callback(null, response);
-
-  // Use this code if you don't use the http event with the LAMBDA-PROXY integration
-  // callback(null, { message: 'Go Serverless v1.0! Your function executed successfully!', event });
+export const hello = (event, context, cb) => {
+  const p = new Promise((resolve, reject) => {
+    resolve('success');
+  });
+  p
+    .then(r => cb(null, {
+      message: 'Go Serverless Webpack (Babel) v1.0! Your function executed successfully!',
+      event,
+    }))
+    .catch(e => cb(e));
 };
