@@ -9,6 +9,8 @@
     "babel": "^6.23.0",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-polyfill": "^6.26.0",
     "babel-preset-latest": "^6.24.1",
     "eslint": "^4.9.0",
     "serverless": "^1.23.0",
@@ -19,6 +21,6 @@
   },
   "scripts": {
     "build": "sls webpack",
-    "offlice": "sls offline start"
+    "offline": "sls offline start"
   }
 }
