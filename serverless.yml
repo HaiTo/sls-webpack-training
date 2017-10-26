@@ -29,6 +29,10 @@ functions:
   hello:
     handler: handler.hello
 
+custom:
+  webpackIncludeModules: true
+  serverless-offline:
+    port: 4567
 
 # you can overwrite defaults here
 #  stage: dev
