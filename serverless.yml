@@ -32,6 +32,12 @@ functions:
       - http:
           method: GET
           path: first
+  resize:
+    handler: src/handler.resize
+    events:
+      - http:
+          method: GET
+          path: resize
 
 custom:
   webpackIncludeModules: true
