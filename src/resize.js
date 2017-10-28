@@ -15,43 +15,45 @@ class LambdaResponse {
 }
 
 const resize = (event, context, callback) => {
-  const key = 'HDR.jpg';
+  const pathParameters = event.pathParameters;
+  const queryStringParameters = event.queryStringParameters;
+
+  const key = pathParameters.filename;
   const bucket = 'sls-test-buckets';
   const params = {
     Bucket: bucket,
     Key: key
-  }
-  const response = new LambdaResponse()
+  };
+  const response = new LambdaResponse();
 
   s3.getObject(params, (err, data) => {
     if (err) {
-      callback(err);
-    } else {
-      const resizeParam = {
-        srcData: data.Body,
-        format: 'jpg',
-        width: 200
+      return callback(err);
+    };
+
+    const resizeParam = {
+      srcData: data.Body,
+      format: 'jpg',
+      width: parseInt(queryStringParameters.width),
+      height: parseInt(queryStringParameters.height)
+    };
+
+    ImageMagick.resize(resizeParam, (err, stdout, stderr) => {
+      if (err) {
+        return callback('resize failed', err);
       }
-      ImageMagick.resize(resizeParam, (err, stdout, stderr) => {
-        if (err) {
-          callback('resize failed', err);
-        } else {
-          const encodedImage = new Buffer(stdout, 'binary').toString('base64');
-          const headers = {
-            'Content-Type': 'image/jpeg',
-            "Access-Control-Allow-Origin" : "*",
-            "Accept": 'image/jpeg'
-          };
-          response.body = encodedImage;
-          response.headers = headers;
 
+      const encodedImage = new Buffer(stdout, 'binary').toString('base64');
+      const headers = {
+        'Content-Type': 'image/jpeg',
+        "Access-Control-Allow-Origin" : "*",
+        "Accept": 'image/jpeg'
+      };
+      response.body = encodedImage;
+      response.headers = headers;
 
-
-          callback(null, response);
-        }
-      })
-    }
-  })
+      return callback(null, response);
+    });
+  });
 }
-
 export default resize;

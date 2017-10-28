@@ -49,7 +49,7 @@ functions:
     events:
       - http:
           method: GET
-          path: resize
+          path: resize/{filename}
           cors:
             origin: '*'
             headers:
@@ -60,6 +60,13 @@ functions:
               - X-Amz-Security-Token
               - X-Amz-User-Agent
             allowCredentials: false
+          request:
+            parameters:
+              paths:
+                filename: true
+              querystrings:
+                width: true
+                height: true
           response:
             headers:
               Content-Type: 'image/jpeg'
