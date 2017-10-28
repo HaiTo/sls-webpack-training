@@ -30,7 +30,7 @@ provider:
     - Effect: Allow
       Action:
         - logs:*
-      Resource: "arn:aws:logs:ap-northeast-1:*"  
+      Resource: "arn:aws:logs:ap-northeast-1:*"
 
 plugins:
   - serverless-webpack
@@ -50,6 +50,19 @@ functions:
       - http:
           method: GET
           path: resize
+          cors:
+            origin: '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: false
+          response:
+            headers:
+              Content-Type: 'image/jpeg'
 
 custom:
   webpackIncludeModules: true
