@@ -19,11 +19,23 @@ service: aws-nodejs # NOTE: update this with your service name
 
 provider:
   name: aws
+  region: ap-northeast-1
   runtime: nodejs6.10
+
+  iamRoleStatements: # add
+    - Effect: Allow
+      Action:
+        - s3:*
+      Resource: "arn:aws:s3:::*"
+    - Effect: Allow
+      Action:
+        - logs:*
+      Resource: "arn:aws:logs:ap-northeast-1:*"  
 
 plugins:
   - serverless-webpack
   - serverless-offline
+  - serverless-apigw-binary
 
 functions:
   first:
@@ -44,6 +56,10 @@ custom:
   serverless-offline:
     port: 4567
   webpack: ./webpack.config.js
+  apigwBinary:
+    types:
+      - 'image/jpeg'
+      - 'text/html'
 
 # you can overwrite defaults here
 #  stage: dev
