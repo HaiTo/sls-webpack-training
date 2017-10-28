@@ -15,7 +15,7 @@ const resize = (event, context, callback) => {
 
   s3.getObject(params, (err, data) => {
     if (err) {
-      callback(`Error getting object ${key} from bucket ${bucket}. Make sure they exist and your bucket is in the same region as this function.`);
+      callback(err);
     } else {
       const resizeParam = {
         srcData: data.Body,
