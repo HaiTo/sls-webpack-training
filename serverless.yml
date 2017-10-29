@@ -37,12 +37,6 @@ plugins:
   - serverless-apigw-binary
 
 functions:
-  first:
-    handler: src/handler.hello
-    events:
-      - http:
-          method: GET
-          path: first
   resize:
     handler: src/handler.resize
     memorySize: 512
@@ -68,9 +62,6 @@ functions:
               querystrings:
                 width: true
                 height: true
-          response:
-            headers:
-              Content-Type: 'image/jpeg'
 
 custom:
   webpackIncludeModules: true
