@@ -1,0 +1,25 @@
+
+    // const resizeParam = {
+    //   srcData: data.Body,
+    //   format: 'jpg',
+    //   width: parseInt(queryStringParameters.width),
+    //   height: parseInt(queryStringParameters.height),
+    //   gravity: ''
+    // };
+    //
+    // ImageMagick.resize(resizeParam, (err, stdout, stderr) => {
+    //   if (err) {
+    //     return callback('resize failed', err);
+    //   }
+    //
+    //   const encodedImage = new Buffer(stdout, 'binary').toString('base64');
+    //   const headers = {
+    //     'Content-Type': 'image/jpeg',
+    //     "Access-Control-Allow-Origin" : "*",
+    //     "Accept": 'image/jpeg'
+    //   };
+    //   response.body = encodedImage;
+    //   response.headers = headers;
+    //
+    //   return callback(null, response);
+    // });
