@@ -1,6 +1,6 @@
 'use strict';
 
-import gm from 'gm';
+import ImageMagick from 'imagemagick';
 import Aws from 'aws-sdk';
 
 const s3 = new Aws.S3({ apiVersion: '2006-03-01' })
@@ -37,15 +37,29 @@ const resize = (event, context, callback) => {
       return callback(err);
     };
 
-    gm(data.Body)
-      .options({ imageMagick: true})
-      .resize(width, height)
-      .toBuffer('jpeg', (err, buffer) => {
-        if (err) { console.log(err); return callback(err); }
+    const resizeParam = {
+      srcData: data.Body,
+      format: 'jpg',
+      width: parseInt(queryStringParameters.width),
+      height: parseInt(queryStringParameters.height)
+    };
 
-        response.body = buffer.toString('base64')
-        callback(null, response);
-      })
+    ImageMagick.resize(resizeParam, (err, stdout) => {
+      if (err) {
+        return callback('resize failed', err);
+      }
+
+      const encodedImage = new Buffer(stdout, 'binary').toString('base64');
+      const headers = {
+        'Content-Type': 'image/jpeg',
+        "Access-Control-Allow-Origin" : "*",
+        "Accept": 'image/jpeg'
+      };
+      response.body = encodedImage;
+      response.headers = headers;
+
+      return callback(null, response);
+    });
   })
 }
 export default resize;
