@@ -10,7 +10,7 @@ class LambdaResponse {
     this.statusCode = 200;
     this.headers = {
       'Content-Type': 'image/jpeg',
-      "Access-Control-Allow-Origin" : "*",
+      "Access-Control-Allow-Origin": "*",
       "Accept": 'image/jpeg'
     };
     this.body = '';
@@ -37,34 +37,19 @@ const resize = (event, context, callback) => {
       return callback(err);
     };
 
-    const resizeParam = {
-      srcData: data.Body,
-      format: 'jpg',
-      width: parseInt(queryStringParameters.width),
-      height: parseInt(queryStringParameters.height),
-      customArgs: [
-        "-font '/usr/share/fonts/dejavu/DejaVuSans.ttf'",
-        "-pointsize 20",
-        "-annotate +100-100 'sample'"
-      ]
-    };
+    gm(data.Body)
+      .options({ imageMagick: true })
+      .resize(width, height)
+      .font("/usr/share/fonts/dejavu/DejaVuSerif.ttf", 10)
+      .stroke('#ffffff')
+      .fill('#ffffff')
+      .drawText(0, 0, 'examples', 'SouthWest')
+      .toBuffer('jpeg', (err, buffer) => {
+        if (err) { console.log(err); return callback(err); }
 
-    ImageMagick.resize(resizeParam, (err, stdout) => {
-      if (err) {
-        return callback('resize failed' + err);
-      }
-
-      const encodedImage = new Buffer(stdout, 'binary').toString('base64');
-      const headers = {
-        'Content-Type': 'image/jpeg',
-        "Access-Control-Allow-Origin" : "*",
-        "Accept": 'image/jpeg'
-      };
-      response.body = encodedImage;
-      response.headers = headers;
-
-      return callback(null, response);
-    });
+        response.body = buffer.toString('base64')
+        callback(null, response);
+      })
   })
 }
 export default resize;
