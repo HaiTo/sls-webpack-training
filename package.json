@@ -2,7 +2,7 @@
   "name": "server-less",
   "version": "0.0.1",
   "main": "index.js",
-  "author": "HaiTo <thewordr2.ver.xes@gmail.com>",
+  "author": "HaiTo <rilinwing@gmail.com>",
   "license": "MIT",
   "private": true,
   "dependencies": {
