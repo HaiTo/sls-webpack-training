@@ -1,6 +1,6 @@
 'use strict';
 
-import ImageMagick from 'imagemagick';
+import gm from 'gm';
 import Aws from 'aws-sdk';
 
 const s3 = new Aws.S3({ apiVersion: '2006-03-01' })
