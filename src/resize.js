@@ -43,7 +43,7 @@ const resize = (event, context, callback) => {
       .font("/usr/share/fonts/dejavu/DejaVuSerif.ttf", 10)
       .stroke('#ffffff')
       .fill('#ffffff')
-      .drawText(0, 0, 'examples', 'SouthWest')
+      .drawText(0, 0, data.Metadata.uploader, 'SouthWest')
       .toBuffer('jpeg', (err, buffer) => {
         if (err) { console.log(err); return callback(err); }
 
