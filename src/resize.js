@@ -41,12 +41,17 @@ const resize = (event, context, callback) => {
       srcData: data.Body,
       format: 'jpg',
       width: parseInt(queryStringParameters.width),
-      height: parseInt(queryStringParameters.height)
+      height: parseInt(queryStringParameters.height),
+      customArgs: [
+        "-font '/usr/share/fonts/dejavu/DejaVuSans.ttf'",
+        "-pointsize 20",
+        "-annotate +100-100 'sample'"
+      ]
     };
 
     ImageMagick.resize(resizeParam, (err, stdout) => {
       if (err) {
-        return callback('resize failed', err);
+        return callback('resize failed' + err);
       }
 
       const encodedImage = new Buffer(stdout, 'binary').toString('base64');
