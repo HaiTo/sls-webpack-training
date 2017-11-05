@@ -2,6 +2,7 @@
 
 import gm from 'gm';
 import Aws from 'aws-sdk';
+import EventParameter from './event_parameter';
 
 const s3 = new Aws.S3({ apiVersion: '2006-03-01' })
 
@@ -19,16 +20,12 @@ class LambdaResponse {
 }
 
 const resize = (event, context, callback) => {
-  const pathParameters = event.pathParameters;
-  const queryStringParameters = event.queryStringParameters;
-  const width = parseInt(queryStringParameters.width);
-  const height = parseInt(queryStringParameters.height);
+  const eventParameter = new EventParameter(event);
 
-  const key = pathParameters.filename;
   const bucket = 'sls-test-buckets';
   const params = {
     Bucket: bucket,
-    Key: key
+    Key: eventParameter.s3ObjectKey()
   };
   const response = new LambdaResponse();
 
@@ -39,11 +36,12 @@ const resize = (event, context, callback) => {
 
     gm(data.Body)
       .options({ imageMagick: true })
-      .resize(width, height)
+      .resize(eventParameter.longLength, eventParameter.longLength)
+      .quality(eventParameter.quality)
       .font("/usr/share/fonts/dejavu/DejaVuSerif.ttf", 10)
-      .stroke('#ffffff')
-      .fill('#ffffff')
-      .drawText(0, 0, data.Metadata.uploader, 'SouthWest')
+      .stroke(data.Metadata.color)
+      .fill(data.Metadata.color)
+      .drawText(0, 0, data.Metadata.uploader, data.Metadata.gravity)
       .toBuffer('jpeg', (err, buffer) => {
         if (err) { console.log(err); return callback(err); }
 
